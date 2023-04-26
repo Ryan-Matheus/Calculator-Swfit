@@ -11,6 +11,14 @@ class ViewController: UIViewController {
        
     @IBOutlet var holder: UIView!
     
+    var firstNumber = 0
+    var resultNumber = 0
+    var currentOperations: Operation?
+    
+    enum Operation {
+        case add, subtract, multiply, divide
+    }
+    
     private var resultLabel: UILabel = {
         let label = UILabel()
         label.text = "0"
@@ -40,6 +48,7 @@ class ViewController: UIViewController {
         zeroButton.setTitle("0", for: .normal)
         zeroButton.tag = 1
         holder.addSubview(zeroButton)
+        zeroButton.addTarget(self, action: #selector(zeroTapped), for: .touchUpInside)
         
         for x in 0..<3 {
             let button1 = UIButton(frame: CGRect(x: buttonSize * CGFloat(x), y: holder.frame.size.height-(buttonSize*2), width: buttonSize, height: buttonSize))
@@ -86,6 +95,8 @@ class ViewController: UIViewController {
             button4.backgroundColor = .orange
             button4.setTitle(operations[x], for: .normal)
             holder.addSubview(button4)
+            button4.tag = x+1
+            button4.addTarget(self, action: #selector(operationPressed(_:)), for: .touchUpInside)
         }
         
         resultLabel.frame = CGRect(x: 20, y: clearButton.frame.origin.y - 110.0, width: view.frame.size.width - 40, height: 100)
@@ -96,8 +107,19 @@ class ViewController: UIViewController {
     }
     
     @objc func clearResult() {
-        resultLabel.text = "0"
-    }
+           resultLabel.text = "0"
+           currentOperations = nil
+           firstNumber = 0
+       }
+
+       @objc func zeroTapped() {
+
+           if resultLabel.text != "0" {
+               if let text = resultLabel.text {
+                   resultLabel.text = "\(text)\(0)"
+               }
+           }
+       }
     
     @objc func numberPressed(_ sender: UIButton) {
         let tag = sender.tag - 1
@@ -107,6 +129,56 @@ class ViewController: UIViewController {
         }
         else if let text = resultLabel.text {
             resultLabel.text = "\(text)\(tag)"
+        }
+    }
+    
+    @objc func operationPressed(_ sender: UIButton) {
+        let tag = sender.tag
+        
+        if let text = resultLabel.text, let value = Int(text), firstNumber == 0 {
+            firstNumber = value
+            resultLabel.text = "0"
+        }
+        
+        
+        if tag == 1 {
+            if let operation = currentOperations {
+                var secondNumber = 0
+                if let text = resultLabel.text, let value = Int(text) {
+                    secondNumber = value
+                }
+                
+                switch operation {
+                case .add:
+                    let result = firstNumber + secondNumber
+                    resultLabel.text = "\(result)"
+                    break
+                case .subtract:
+                    let result = firstNumber - secondNumber
+                    resultLabel.text = "\(result)"
+                    break
+                case .multiply:
+                    let result = firstNumber * secondNumber
+                    resultLabel.text = "\(result)"
+                    break
+                case .divide:
+                    let result = firstNumber / secondNumber
+                    resultLabel.text = "\(result)"
+                    break
+                }
+            }
+        }
+        else if tag == 2 {
+            currentOperations = .add
+        }
+        else if tag == 3 {
+            currentOperations = .subtract
+        }
+        else if tag == 4 {
+            currentOperations = .multiply
+        }
+        else if tag == 5 {
+            currentOperations = .divide
         }
     }
     
