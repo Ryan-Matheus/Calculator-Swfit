@@ -11,6 +11,15 @@ class ViewController: UIViewController {
        
     @IBOutlet var holder: UIView!
     
+    private var resultLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0"
+        label.textColor = .white
+        label.textAlignment = .right
+        label.font = UIFont(name: "Helvetica", size: 100)
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -26,38 +35,38 @@ class ViewController: UIViewController {
         let buttonSize: CGFloat = view.frame.size.width / 4
         
         let zeroButton = UIButton(frame: CGRect(x: 0, y: holder.frame.size.height-buttonSize, width: buttonSize*3, height: buttonSize))
-        zeroButton.setTitleColor(.white, for: .normal)
-        zeroButton.backgroundColor = .orange
+        zeroButton.setTitleColor(.black, for: .normal)
+        zeroButton.backgroundColor = .white
         zeroButton.setTitle("0", for: .normal)
         holder.addSubview(zeroButton)
         
         for x in 0..<3 {
             let button1 = UIButton(frame: CGRect(x: buttonSize * CGFloat(x), y: holder.frame.size.height-(buttonSize*2), width: buttonSize, height: buttonSize))
-            button1.setTitleColor(.white, for: .normal)
-            button1.backgroundColor = .orange
+            button1.setTitleColor(.black, for: .normal)
+            button1.backgroundColor = .white
             button1.setTitle("\(x+1)", for: .normal)
             holder.addSubview(button1)
         }
         
         for x in 0..<3 {
             let button2 = UIButton(frame: CGRect(x: buttonSize * CGFloat(x), y: holder.frame.size.height-(buttonSize*3), width: buttonSize, height: buttonSize))
-            button2.setTitleColor(.white, for: .normal)
-            button2.backgroundColor = .orange
+            button2.setTitleColor(.black, for: .normal)
+            button2.backgroundColor = .white
             button2.setTitle("\(x+4)", for: .normal)
             holder.addSubview(button2)
         }
         
         for x in 0..<3 {
             let button3 = UIButton(frame: CGRect(x: buttonSize * CGFloat(x), y: holder.frame.size.height-(buttonSize*4), width: buttonSize, height: buttonSize))
-            button3.setTitleColor(.white, for: .normal)
-            button3.backgroundColor = .orange
+            button3.setTitleColor(.black, for: .normal)
+            button3.backgroundColor = .white
             button3.setTitle("\(x+7)", for: .normal)
             holder.addSubview(button3)
         }
         
-        let clearButton = UIButton(frame: CGRect(x: 0, y: holder.frame.size.height-(buttonSize*5), width: view.frame.size.height, height: buttonSize))
-        clearButton.setTitleColor(.white, for: .normal)
-        clearButton.backgroundColor = .orange
+        let clearButton = UIButton(frame: CGRect(x: 0, y: holder.frame.size.height-(buttonSize*5), width: view.frame.size.width, height: buttonSize))
+        clearButton.setTitleColor(.black, for: .normal)
+        clearButton.backgroundColor = .white
         clearButton.setTitle("Clear ALL", for: .normal)
         holder.addSubview(clearButton)
         
@@ -71,6 +80,9 @@ class ViewController: UIViewController {
             button4.setTitle(operations[x], for: .normal)
             holder.addSubview(button4)
         }
+        
+        resultLabel.frame = CGRect(x: 20, y: clearButton.frame.origin.y - 110.0, width: view.frame.size.width - 40, height: 100)
+        holder.addSubview(resultLabel)
         
     }
     
